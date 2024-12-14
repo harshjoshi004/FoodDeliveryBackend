@@ -26,7 +26,7 @@ fun Application.module() {
         json()
     }
     install(CallLogging)
-
+    configureRouting()
     install(Authentication) {
         jwt {
             realm = "ktor.io"

@@ -11,7 +11,9 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -56,8 +58,14 @@ object AuthService {
         val response: HttpResponse = httpClient.get("https://oauth2.googleapis.com/tokeninfo") {
             parameter("id_token", idToken)
         }
+        val responseBody = response.bodyAsText() // Read as plain text first
+        println("Response Body: $responseBody") // Debug response
+
+        // Parse as JsonObject
+        val jsonObject: JsonObject = Json.parseToJsonElement(responseBody).jsonObject
+
         return if (response.status == HttpStatusCode.OK) {
-            val userInfo = response.body<JsonObject>()
+            val userInfo = jsonObject
             mapOf(
                 "email" to userInfo["email"]?.jsonPrimitive?.content.orEmpty(),
                 "name" to userInfo["name"]?.jsonPrimitive?.content.orEmpty()

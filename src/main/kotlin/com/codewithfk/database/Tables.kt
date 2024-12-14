@@ -23,7 +23,7 @@ object CategoriesTable : Table("categories") {
     val name = varchar("name", 255).uniqueIndex()
     val createdAt = datetime("created_at").defaultExpression(org.jetbrains.exposed.sql.javatime.CurrentTimestamp())
     override val primaryKey: PrimaryKey
-        get() = PrimaryKey(CategoriesTable.id)
+        get() = PrimaryKey(id)
 }
 
 object RestaurantsTable : Table("restaurants") {
@@ -36,5 +36,67 @@ object RestaurantsTable : Table("restaurants") {
     val longitude = double("longitude") // Restaurant's longitude
     val createdAt = datetime("created_at").defaultExpression(org.jetbrains.exposed.sql.javatime.CurrentTimestamp())
     override val primaryKey: PrimaryKey
-        get() = PrimaryKey(UsersTable.id)
+        get() = PrimaryKey(id)
+}
+
+object MenuItemsTable : Table("menu_items") {
+    val id = uuid("id").autoGenerate()
+    val restaurantId = uuid("restaurant_id").references(RestaurantsTable.id)
+    val name = varchar("name", 255)
+    val description = varchar("description", 1000).nullable()
+    val price = double("price")
+    val imageUrl = varchar("image_url", 500).nullable()
+    val arModelUrl = varchar("ar_model_url", 500).nullable()
+    val createdAt = datetime("created_at").defaultExpression(org.jetbrains.exposed.sql.javatime.CurrentTimestamp())
+    override val primaryKey: PrimaryKey
+        get() = PrimaryKey(id)
+}
+
+object CartTable : Table("cart") {
+    val id = uuid("id").autoGenerate()
+    val userId = uuid("user_id").references(UsersTable.id) // Cart belongs to a user
+    val restaurantId = uuid("restaurant_id").references(RestaurantsTable.id) // Restaurant associated with the cart
+    val menuItemId = uuid("menu_item_id").references(MenuItemsTable.id) // Menu item in the cart
+    val quantity = integer("quantity") // Quantity of the item
+    val addedAt = datetime("added_at").defaultExpression(org.jetbrains.exposed.sql.javatime.CurrentTimestamp())
+    override val primaryKey: PrimaryKey
+        get() = PrimaryKey(id)
+}
+
+object AddressesTable : Table("addresses") {
+    val id = uuid("id").autoGenerate()
+    val userId = uuid("user_id").references(UsersTable.id)
+    val addressLine1 = varchar("address_line1", 255)
+    val addressLine2 = varchar("address_line2", 255).nullable()
+    val city = varchar("city", 100)
+    val state = varchar("state", 100)
+    val zipCode = varchar("zip_code", 20)
+    val country = varchar("country", 100)
+    val latitude = double("latitude").nullable()
+    val longitude = double("longitude").nullable()
+    override val primaryKey: PrimaryKey
+        get() = PrimaryKey(id)
+}
+object OrdersTable : Table("orders") {
+    val id = uuid("id").autoGenerate()
+    val userId = uuid("user_id").references(UsersTable.id)
+    val restaurantId = uuid("restaurant_id").references(RestaurantsTable.id)
+    val addressId = uuid("address_id").references(AddressesTable.id)
+    val status = varchar("status", 50).default("Pending") // Pending, Preparing, Picked Up, Delivered
+    val paymentStatus = varchar("payment_status", 50).default("Pending") // Pending, Paid, Failed
+    val stripePaymentIntentId = varchar("stripe_payment_intent_id", 255).nullable()
+    val totalAmount = double("total_amount")
+    val createdAt = datetime("created_at").defaultExpression(org.jetbrains.exposed.sql.javatime.CurrentTimestamp())
+    val updatedAt = datetime("updated_at").defaultExpression(org.jetbrains.exposed.sql.javatime.CurrentTimestamp())
+    override val primaryKey: PrimaryKey
+        get() = PrimaryKey(AddressesTable.id)
+}
+
+object OrderItemsTable : Table("order_items") {
+    val id = uuid("id").autoGenerate()
+    val orderId = uuid("order_id").references(OrdersTable.id)
+    val menuItemId = uuid("menu_item_id").references(MenuItemsTable.id)
+    val quantity = integer("quantity")
+    override val primaryKey: PrimaryKey
+        get() = PrimaryKey(AddressesTable.id)
 }
