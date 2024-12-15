@@ -83,8 +83,15 @@ object AuthService {
             parameter("fields", "id,name,email")
             parameter("access_token", accessToken)
         }
+        val responseBody = response.bodyAsText() // Read as plain text first
+        println("Response Body: $responseBody") // Debug response
+
+        // Parse as JsonObject
+        val jsonObject: JsonObject = Json.parseToJsonElement(responseBody).jsonObject
+
+
         return if (response.status == HttpStatusCode.OK) {
-            val userInfo = response.body<JsonObject>()
+            val userInfo = jsonObject
             mapOf(
                 "email" to userInfo["email"]?.jsonPrimitive?.content.orEmpty(),
                 "name" to userInfo["name"]?.jsonPrimitive?.content.orEmpty()

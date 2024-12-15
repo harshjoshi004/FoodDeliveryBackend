@@ -1,5 +1,6 @@
 package com.codewithfk.database
 
+import com.codewithfk.database.MenuItemsTable.nullable
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.datetime
 
@@ -21,6 +22,7 @@ object UsersTable : Table("users") {
 object CategoriesTable : Table("categories") {
     val id = uuid("id").autoGenerate()
     val name = varchar("name", 255).uniqueIndex()
+    val imageUrl = varchar("image_url", 500).nullable()
     val createdAt = datetime("created_at").defaultExpression(org.jetbrains.exposed.sql.javatime.CurrentTimestamp())
     override val primaryKey: PrimaryKey
         get() = PrimaryKey(id)
@@ -32,6 +34,7 @@ object RestaurantsTable : Table("restaurants") {
     val name = varchar("name", 255)
     val address = varchar("address", 500)
     val categoryId = uuid("category_id").references(CategoriesTable.id)
+    val imageUrl = varchar("image_url", 500).nullable()
     val latitude = double("latitude") // Restaurant's latitude
     val longitude = double("longitude") // Restaurant's longitude
     val createdAt = datetime("created_at").defaultExpression(org.jetbrains.exposed.sql.javatime.CurrentTimestamp())

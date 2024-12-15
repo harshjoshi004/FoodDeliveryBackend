@@ -18,6 +18,7 @@ object CategoryService {
                     Category(
                         id = it[CategoriesTable.id].toString(),
                         name = it[CategoriesTable.name],
+                        imageUrl = it[CategoriesTable.imageUrl].toString(),
                         createdAt = it[CategoriesTable.createdAt].toString()
                     )
                 }

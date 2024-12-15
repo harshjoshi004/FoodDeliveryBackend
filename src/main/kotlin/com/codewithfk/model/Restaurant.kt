@@ -11,7 +11,8 @@ data class Restaurant(
     val address: String,
     val categoryId: String,
     val latitude: Double,
+    val imageUrl: String,
     val longitude: Double,
     val createdAt: String,
-    val distance: Double? = null // Optional, included for nearby restaurants
+    val distance: Double? = null,
 )
