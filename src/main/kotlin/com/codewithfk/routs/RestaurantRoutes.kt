@@ -70,7 +70,7 @@ fun Route.restaurantRoutes() {
             var uuid: UUID? = null
             categoryId?.let { uuid = UUID.fromString(it) }
             val restaurants = RestaurantService.getNearbyRestaurants(lat, lon, uuid)
-            call.respond(restaurants)
+            call.respond(HttpStatusCode.OK, mapOf("data" to restaurants))
         }
 
         /**
@@ -83,7 +83,7 @@ fun Route.restaurantRoutes() {
             val restaurant = RestaurantService.getRestaurantById(UUID.fromString(id))
                 ?: return@get call.respondError("Restaurant not found.", HttpStatusCode.NotFound)
 
-            call.respond(mapOf("data" to restaurant))
+            call.respond(HttpStatusCode.OK, mapOf("data" to restaurant))
         }
     }
 }

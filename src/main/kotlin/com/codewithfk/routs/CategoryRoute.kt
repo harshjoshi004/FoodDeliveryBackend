@@ -17,7 +17,7 @@ fun Route.categoryRoutes() {
          */
         get {
             val categories = CategoryService.getAllCategories()
-            call.respond(categories)
+            call.respond(mapOf("data" to categories))
         }
 
         /**
