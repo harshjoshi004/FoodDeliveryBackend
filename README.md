@@ -6,7 +6,7 @@ Welcome to the **Food Delivery App Backend**! This project is a robust backend b
 2. **Rider App**: For delivery personnel to manage and update order statuses and share live locations.
 3. **Restaurant App**: For restaurant owners to manage their listings, update order statuses, and oversee operations.
 
-This backend is scalable, modular, and optimized for real-world deployment scenarios.
+Thi[gradlew.bat](gradlew.bat)s backend is scalable, modular, and optimized for real-world deployment scenarios.
 
 ---
 

@@ -13,7 +13,7 @@ object DatabaseFactory {
     fun init() {
         val dbUrl = "jdbc:mysql://localhost:3306/food_delivery"
         val dbUser = "root"
-        val dbPassword = "root"
+        val dbPassword = "godknows"
 
         Database.connect(
             url = dbUrl,

@@ -18,7 +18,8 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.routing.*
 
 fun main(args: Array<String>) {
-    io.ktor.server.netty.EngineMain.main(args)
+    val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
+    io.ktor.server.netty.EngineMain.main(args + "-port=$port")
 }
 
 fun Application.module() {
