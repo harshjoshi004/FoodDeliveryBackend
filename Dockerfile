@@ -10,5 +10,5 @@ COPY build/libs/*.jar app.jar
 # Expose the port your Ktor app uses
 EXPOSE 8080
 
-# Run the Ktor server
-CMD ["java", "-jar", "app.jar"]
+# Run the JAR file
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
